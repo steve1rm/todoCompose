@@ -16,3 +16,4 @@ rootProject.name = "ToDoCompose"
 include ':app'
 include ':data'
 include ':dependencies'
+include ':domain'

@@ -32,7 +32,9 @@ android {
 }
 
 dependencies {
+    /* Remove this in the future as the Constant colors are part of the UI */
     implementation(project(":app"))
+    implementation(project(":domain"))
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.4.1'

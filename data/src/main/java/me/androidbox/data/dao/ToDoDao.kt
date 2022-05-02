@@ -2,7 +2,6 @@ package me.androidbox.data.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import me.androidbox.data.model.Priority
 import me.androidbox.data.model.ToDoTask
 
 @Dao
