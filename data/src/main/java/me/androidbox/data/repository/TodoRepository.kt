@@ -1,25 +1,25 @@
 package me.androidbox.data.repository
 
 import kotlinx.coroutines.flow.Flow
-import me.androidbox.data.model.ToDoTask
+import me.androidbox.data.model.ToDoTaskModel
 
 interface TodoRepository  {
 
-    fun getAllTasks(): Flow<List<ToDoTask>>
+    fun getAllTasks(): Flow<List<ToDoTaskModel>>
 
-    fun getSelectedTask(taskId: Int): Flow<ToDoTask>
+    fun getSelectedTask(taskId: Int): Flow<ToDoTaskModel>
 
-    suspend fun addTask(toDoTask: ToDoTask)
+    suspend fun addTask(toDoTaskModel: ToDoTaskModel)
 
-    suspend fun updateTask(toDoTask: ToDoTask)
+    suspend fun updateTask(toDoTaskModel: ToDoTaskModel)
 
-    suspend fun deleteTask(toDoTask: ToDoTask)
+    suspend fun deleteTask(toDoTaskModel: ToDoTaskModel)
 
     suspend fun deleteAllTask()
 
-    fun searchDatabase(searchQuery: String): Flow<List<ToDoTask>>
+    fun searchDatabase(searchQuery: String): Flow<List<ToDoTaskModel>>
 
-    fun sortByLowPriority(): Flow<List<ToDoTask>>
+    fun sortByLowPriority(): Flow<List<ToDoTaskModel>>
 
-    fun sortByHighPriority(): Flow<List<ToDoTask>>
+    fun sortByHighPriority(): Flow<List<ToDoTaskModel>>
 }

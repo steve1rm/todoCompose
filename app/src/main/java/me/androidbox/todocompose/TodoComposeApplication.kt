@@ -1,4 +1,4 @@
-package me.androidbox.dependencies.application
+package me.androidbox.todocompose
 
 import android.app.Application
 import dagger.hilt.android.HiltAndroidApp

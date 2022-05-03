@@ -2,35 +2,35 @@ package me.androidbox.data.dao
 
 import androidx.room.*
 import kotlinx.coroutines.flow.Flow
-import me.androidbox.data.model.ToDoTask
+import me.androidbox.data.model.ToDoTaskModel
 
 @Dao
 interface ToDoDao {
 
     @Query("SELECT * FROM todo_table ORDER BY id ASC")
-    fun getAllTasks(): Flow<List<ToDoTask>>
+    fun getAllTasks(): Flow<List<ToDoTaskModel>>
 
     @Query("SELECT * FROM todo_table WHERE id=:taskId")
-    fun getSelectedTask(taskId: Int): Flow<ToDoTask>
+    fun getSelectedTask(taskId: Int): Flow<ToDoTaskModel>
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun addTask(toDoTask: ToDoTask)
+    suspend fun addTask(toDoTaskModel: ToDoTaskModel)
 
     @Update
-    suspend fun updateTask(toDoTask: ToDoTask)
+    suspend fun updateTask(toDoTaskModel: ToDoTaskModel)
 
     @Delete
-    suspend fun deleteTask(toDoTask: ToDoTask)
+    suspend fun deleteTask(toDoTaskModel: ToDoTaskModel)
 
     @Query("DELETE FROM todo_table")
     suspend fun deleteAllTask()
 
     @Query("SELECT * FROM todo_table WHERE title LIKE :searchQuery OR description LIKE :searchQuery")
-    fun searchDatabase(searchQuery: String): Flow<List<ToDoTask>>
+    fun searchDatabase(searchQuery: String): Flow<List<ToDoTaskModel>>
 
     @Query("SELECT * FROM todo_table ORDER BY CASE WHEN priority LIKE 'L%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'H%' THEN 3 END")
-    fun sortByLowPriority(): Flow<List<ToDoTask>>
+    fun sortByLowPriority(): Flow<List<ToDoTaskModel>>
 
     @Query("SELECT * FROM todo_table ORDER BY CASE WHEN priority LIKE 'H%' THEN 1 WHEN priority LIKE 'M%' THEN 2 WHEN priority LIKE 'L%' THEN 3 END")
-    fun sortByHighPriority(): Flow<List<ToDoTask>>
+    fun sortByHighPriority(): Flow<List<ToDoTaskModel>>
 }

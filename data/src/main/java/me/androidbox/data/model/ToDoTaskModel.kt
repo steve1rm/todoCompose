@@ -5,10 +5,10 @@ import androidx.room.PrimaryKey
 import me.androidbox.data.util.Constant
 
 @Entity(tableName = Constant.DATABASE_TABLE)
-data class ToDoTask(
+data class ToDoTaskModel(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val title: String,
     val description: String,
-    val priority: me.androidbox.domain.constant.Priority
+    val priority: Priority
 )
