@@ -17,7 +17,7 @@ class ShareViewModel @Inject constructor(
 
     private val listOfTaskMutableStateFlow = MutableStateFlow<List<TodoTaskEntity>>(emptyList())
     val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
-    
+
     fun getAllTasks() {
         viewModelScope.launch {
             getAllTaskUseCase.getAllTask().collect { listOfTodoTask ->
