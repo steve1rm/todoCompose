@@ -13,7 +13,7 @@ dependencyResolutionManagement {
     }
 }
 rootProject.name = "ToDoCompose"
-include ':app'
+include ':presentation'
 include ':data'
 include ':dependencies'
 include ':domain'
