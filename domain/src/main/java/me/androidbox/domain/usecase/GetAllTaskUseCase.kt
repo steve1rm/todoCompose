@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 import me.androidbox.domain.entity.TodoTaskEntity
 
 interface GetAllTaskUseCase {
-    fun getAllTask(): Flow<List<TodoTaskEntity>>
+    fun execute(): Flow<List<TodoTaskEntity>>
 }

@@ -17,7 +17,6 @@ import javax.inject.Singleton
 interface DatabaseModule {
 
     companion object {
-
         @Provides
         @Singleton
         fun provideRoomDatabase(@ApplicationContext context: Context): TodoDatabase {

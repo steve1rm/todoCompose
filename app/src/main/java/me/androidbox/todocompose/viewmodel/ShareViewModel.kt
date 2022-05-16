@@ -1,20 +1,16 @@
 package me.androidbox.todocompose.viewmodel
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.launch
-import me.androidbox.domain.entity.TodoTaskEntity
-import me.androidbox.domain.usecase.GetAllTaskUseCase
+import me.androidbox.domain.repository.AllTaskRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class ShareViewModel @Inject constructor(
-    private val getAllTaskUseCase: GetAllTaskUseCase
+    private val allTaskRepository: AllTaskRepository
 ): ViewModel() {
 
+/*
     private val listOfTaskMutableStateFlow = MutableStateFlow<List<TodoTaskEntity>>(emptyList())
     val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
 
@@ -25,5 +21,6 @@ class ShareViewModel @Inject constructor(
             }
         }
     }
+*/
 
 }

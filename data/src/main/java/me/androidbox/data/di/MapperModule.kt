@@ -20,5 +20,5 @@ interface MapperModule {
 
     @Binds
     fun bindDataToDomainMapper(dataToDomainMapperImp: DataToDomainMapperImp)
-            : DataToDomainMapper<ToDoTaskModel, TodoTaskEntity>
+            : DataToDomainMapper
 }
