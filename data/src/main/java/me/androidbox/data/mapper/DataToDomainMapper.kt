@@ -1,7 +1,5 @@
 package me.androidbox.data.mapper
 
-import me.androidbox.data.mapper.base.DataToDomain
-import me.androidbox.data.model.ToDoTaskModel
-import me.androidbox.domain.entity.TodoTaskEntity
-
-interface DataToDomainMapper : DataToDomain<ToDoTaskModel, TodoTaskEntity>
+interface DataToDomainMapper<in M, out E> {
+    fun map(model: M): E
+}

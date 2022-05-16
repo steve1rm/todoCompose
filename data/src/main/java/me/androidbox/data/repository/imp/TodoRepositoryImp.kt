@@ -7,25 +7,16 @@ import me.androidbox.data.mapper.DataToDomainMapper
 import me.androidbox.data.mapper.DomainToDataMapper
 import me.androidbox.data.model.ToDoTaskModel
 import me.androidbox.domain.entity.TodoTaskEntity
-import me.androidbox.domain.repository.AllTaskRepository
+import me.androidbox.domain.repository.TaskRepository
 import javax.inject.Inject
 
 class TodoRepositoryImp @Inject constructor(
     private val toDoDao: ToDoDao,
-private val dataToDomainMapper: DataToDomainMapper,
-private val domainToDataMapper: DomainToDataMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards ToDoTaskModel>)
-    : AllTaskRepository
-/*    GetAllTaskUseCase
-    GetSelectedTaskUseCase,
-    AddTaskUseCase,
-    UpdateTaskUseCase,
-    DeleteAllTaskUseCase,
-    DeleteTaskUseCase,
-    SearchDatabaseUseCase,
-    SortByHighPriorityUseCase,
-    SortByLowPriorityUseCase*/ {
+    private val dataToDomainMapper: DataToDomainMapper<@JvmSuppressWildcards ToDoTaskModel, @JvmSuppressWildcards TodoTaskEntity>,
+    private val domainToDataMapper: DomainToDataMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards ToDoTaskModel>)
+    : TaskRepository {
 
-    override fun getAllTasks(): Flow<List<TodoTaskEntity>> {
+    override fun fetchAllTask(): Flow<List<TodoTaskEntity>> {
         return toDoDao.getAllTasks()
             .map { listOfTodoTaskModel ->
                 listOfTodoTaskModel.map { toDoTaskModel ->
@@ -34,32 +25,20 @@ private val domainToDataMapper: DomainToDataMapper<@JvmSuppressWildcards TodoTas
             }
     }
 
-    /*
-override suspend fun addTask(todoTaskEntity: TodoTaskEntity) {
-    val todoTaskModel = domainToDataMapper.map(todoTaskEntity)
+    override suspend fun addTask(todoTaskEntity: TodoTaskEntity) {
+        val todoTaskModel = domainToDataMapper.map(todoTaskEntity)
 
-    toDoDao.addTask(todoTaskModel)
-}
+        toDoDao.addTask(todoTaskModel)
+    }
 
-override suspend fun deleteAllTask() {
-    toDoDao.deleteAllTask()
-}
+    override suspend fun deleteAllTask() {
+        toDoDao.deleteAllTask()
+    }
 
-override suspend fun deleteTask(todoTaskEntity: TodoTaskEntity) {
-    val toDoTaskModel = domainToDataMapper.map(todoTaskEntity)
+    override suspend fun deleteTask(todoTaskEntity: TodoTaskEntity) {
+        val toDoTaskModel = domainToDataMapper.map(todoTaskEntity)
 
-    toDoDao.deleteTask(toDoTaskModel)
-}
-*/
-
-/*
-    override fun getAllTask(): Flow<List<TodoTaskEntity>> {
-        return toDoDao.getAllTasks()
-            .map { listOfTodoTaskModel ->
-                listOfTodoTaskModel.map { toDoTaskModel ->
-                    dataToDomainMapper.map(toDoTaskModel)
-                }
-            }
+        toDoDao.deleteTask(toDoTaskModel)
     }
 
     override suspend fun updateTask(todoTaskEntity: TodoTaskEntity) {
@@ -68,7 +47,7 @@ override suspend fun deleteTask(todoTaskEntity: TodoTaskEntity) {
         toDoDao.updateTask(todoTaskModel)
     }
 
-    override fun getSelectedTask(taskId: Int): Flow<TodoTaskEntity> {
+    override fun fetchSelectedTask(taskId: Int): Flow<TodoTaskEntity> {
         return toDoDao.getSelectedTask(taskId)
             .map { todoTaskModel ->
                 dataToDomainMapper.map(todoTaskModel)
@@ -101,5 +80,4 @@ override suspend fun deleteTask(todoTaskEntity: TodoTaskEntity) {
                 }
             }
     }
-*/
 }

@@ -4,5 +4,5 @@ import kotlinx.coroutines.flow.Flow
 import me.androidbox.domain.entity.TodoTaskEntity
 
 interface SortByLowPriorityUseCase {
-    fun sortByLowPriority(): Flow<List<TodoTaskEntity>>
+    fun execute(): Flow<List<TodoTaskEntity>>
 }
