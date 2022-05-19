@@ -6,6 +6,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import me.androidbox.todocompose.Constant.LIST_ARGUMENT_KEY
 import me.androidbox.todocompose.Constant.LIST_SCREEN
+import me.androidbox.todocompose.ui.screen.list.ListScreen
 
 fun NavGraphBuilder.listComposable(
     navigateToTaskScreen: (Int) -> Unit
@@ -15,5 +16,7 @@ fun NavGraphBuilder.listComposable(
         arguments = listOf(navArgument(LIST_ARGUMENT_KEY) {
             type = NavType.StringType
         })
-    ) { }
+    ) {
+        ListScreen(navigateToTaskScreen = navigateToTaskScreen)
+    }
 }
