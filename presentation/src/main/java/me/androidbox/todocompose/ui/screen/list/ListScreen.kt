@@ -2,6 +2,7 @@ package me.androidbox.todocompose.ui.screen.list
 
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -10,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.todocompose.R
+import me.androidbox.todocompose.ui.theme.fabBackgroundColor
 
 @Composable
 fun ListScreen(
@@ -27,10 +29,11 @@ fun ListScreen(
 }
 
 @Composable
-fun ListFab(navigateToTaskScreen: (Int) -> Unit) {
+fun ListFab(navigateToTaskScreen: (taskId: Int) -> Unit) {
     FloatingActionButton(onClick = {
         navigateToTaskScreen(-1)
-    }
+    },
+        backgroundColor = MaterialTheme.colors.fabBackgroundColor
     ) {
         Icon(
             imageVector = Icons.Filled.Add,

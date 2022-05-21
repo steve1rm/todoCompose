@@ -1,31 +1,56 @@
 package me.androidbox.todocompose.ui.screen.list
 
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import me.androidbox.todocompose.R
 import me.androidbox.todocompose.ui.theme.topAppBarBackground
 import me.androidbox.todocompose.ui.theme.topAppBarContentColor
 
 @Composable
 fun ListAppBar() {
-    DefaultListAppBar()
+    DefaultListAppBar(onSearchBarClicked = { })
 }
 
 @Composable
-fun DefaultListAppBar() {
+fun DefaultListAppBar(onSearchBarClicked: () -> Unit) {
     TopAppBar(
         title = {
-            Text(text = "tasks",
+            Text(text = "Todo Tasks",
             color = MaterialTheme.colors.topAppBarContentColor)
         },
-        backgroundColor = MaterialTheme.colors.topAppBarBackground
+        backgroundColor = MaterialTheme.colors.topAppBarBackground,
+        actions = {
+            ListAppBarActions(onSearchBarClicked)
+        }
     )
+}
+
+@Composable
+fun ListAppBarActions(onSearchBarClicked: () -> Unit) {
+    SearchAction(onSearchBarClicked)
+}
+
+@Composable
+fun SearchAction(onSearchBarClicked: () -> Unit) {
+    IconButton(
+        onClick = {
+            onSearchBarClicked()
+        }
+    ) {
+        Icon(imageVector = Icons.Filled.Search,
+            contentDescription = stringResource(R.string.search_for_tasks),
+            tint = MaterialTheme.colors.topAppBarContentColor
+        )
+    }
 }
 
 @Composable
 @Preview
 fun DefaultListAppBarPreview() {
-    DefaultListAppBar()
+    DefaultListAppBar(onSearchBarClicked = {})
 }

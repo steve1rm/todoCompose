@@ -9,7 +9,7 @@ import me.androidbox.todocompose.Constant.LIST_SCREEN
 import me.androidbox.todocompose.ui.screen.list.ListScreen
 
 fun NavGraphBuilder.listComposable(
-    navigateToTaskScreen: (Int) -> Unit
+    navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
     composable(
         route = LIST_SCREEN,
