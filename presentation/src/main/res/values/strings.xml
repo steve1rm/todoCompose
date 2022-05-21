@@ -2,4 +2,7 @@
     <string name="app_name">ToDoCompose</string>
     <string name="add_task_button">Add Task Button</string>
     <string name="search_for_tasks">Search for tasks</string>
+    <string name="sort_tasks">Sort tasks</string>
+    <string name="delete_all_tasks">Delete all tasks</string>
+    <string name="title">Todo Tasks</string>
 </resources>
