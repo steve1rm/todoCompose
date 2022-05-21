@@ -28,7 +28,8 @@ import me.androidbox.todocompose.ui.theme.topAppBarContentColor
 
 @Composable
 fun ListAppBar() {
-    DefaultListAppBar(onSearchBarClicked = {}, onSortClicked = {}, onDeleteClicked = {})
+  //  DefaultListAppBar(onSearchBarClicked = {}, onSortClicked = {}, onDeleteClicked = {})
+    SearchBarApp(text = "", onTextChange = {} , onSearchClicked = {}, onCloseClicked = {})
 }
 
 @Composable
