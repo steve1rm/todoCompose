@@ -37,7 +37,7 @@ val Colors.topAppBarContentColor: Color
         }
     }
 
-val Colors.topAppBarBackground: Color
+val Colors.topAppBarBackgroundColor: Color
 @Composable
 get() {
     return if(isLight) Purple500 else Color.Black
