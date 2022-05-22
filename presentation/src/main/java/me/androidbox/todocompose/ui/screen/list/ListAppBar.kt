@@ -1,5 +1,6 @@
 package me.androidbox.todocompose.ui.screen.list
 
+import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -25,11 +26,44 @@ import me.androidbox.todocompose.ui.theme.LARGE_PADDING
 import me.androidbox.todocompose.ui.theme.TOP_APP_BAR_HEIGHT
 import me.androidbox.todocompose.ui.theme.topAppBarBackgroundColor
 import me.androidbox.todocompose.ui.theme.topAppBarContentColor
+import me.androidbox.todocompose.util.SearchAppBarState
+import me.androidbox.todocompose.util.TrailingIconState
+import me.androidbox.todocompose.viewmodel.ShareViewModel
 
 @Composable
-fun ListAppBar() {
-  //  DefaultListAppBar(onSearchBarClicked = {}, onSortClicked = {}, onDeleteClicked = {})
-    SearchBarApp(text = "", onTextChange = {} , onSearchClicked = {}, onCloseClicked = {})
+fun ListAppBar(
+    shareViewModel: ShareViewModel,
+    searchAppBarState: SearchAppBarState,
+    searchText: String
+) {
+    when(searchAppBarState) {
+        SearchAppBarState.CLOSED -> {
+            DefaultListAppBar(
+                onSearchBarClicked = {
+                    shareViewModel.updateSearchAppBarState(SearchAppBarState.OPENED)
+                },
+                onSortClicked = {
+
+                },
+                onDeleteClicked = {
+
+                })
+        }
+        else -> {
+            SearchBarApp(
+                text = searchText,
+                onTextChange = { newText ->
+                    shareViewModel.updateSearchText(newText)
+                } ,
+                onSearchClicked = {
+
+                },
+                onCloseClicked = {
+                    shareViewModel.updateSearchAppBarState(SearchAppBarState.CLOSED)
+                    shareViewModel.updateSearchText("")
+                })
+        }
+    }
 }
 
 @Composable
@@ -144,6 +178,10 @@ fun SearchBarApp(
     onSearchClicked: (String) -> Unit,
     onCloseClicked: () -> Unit
 ) {
+    var trailingIconState by remember {
+        mutableStateOf(TrailingIconState.READY_TO_DELETE)
+    }
+
     Surface(
         modifier = Modifier
             .fillMaxWidth()
@@ -166,7 +204,23 @@ fun SearchBarApp(
                     contentDescription = "Search for task",
                     tint = MaterialTheme.colors.topAppBarContentColor)
             }},
-            trailingIcon = { IconButton(onClick = {  }) {
+            trailingIcon = { IconButton(onClick = {
+                when(trailingIconState) {
+                    TrailingIconState.READY_TO_DELETE -> {
+                        onTextChange("")
+                        trailingIconState = TrailingIconState.READY_TO_CLOSE
+                    }
+                    TrailingIconState.READY_TO_CLOSE -> {
+                        if(text.isNotEmpty()) {
+                            onTextChange("")
+                        }
+                        else {
+                            onCloseClicked()
+                            trailingIconState = TrailingIconState.READY_TO_DELETE
+                        }
+                    }
+                }
+            }) {
                 Icon(
                     imageVector = Icons.Filled.Close,
                     contentDescription = "Search for task",
