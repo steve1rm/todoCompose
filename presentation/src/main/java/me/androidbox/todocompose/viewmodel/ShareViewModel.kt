@@ -22,9 +22,8 @@ class ShareViewModel @Inject constructor(
     private val searchAppBarStateMutableState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState> = searchAppBarStateMutableState
 
-    val listOfTaskMutableStateFlow = MutableStateFlow<List<TodoTaskEntity>>(emptyList())
+    private val listOfTaskMutableStateFlow = MutableStateFlow<List<TodoTaskEntity>>(emptyList())
     val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
-
 
     private val searchTextMutableState = mutableStateOf("")
     val searchTextState = searchTextMutableState

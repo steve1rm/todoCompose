@@ -1,5 +1,6 @@
 package me.androidbox.todocompose.ui.screen.list
 
+import android.util.Log
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
@@ -7,6 +8,8 @@ import androidx.compose.material.Scaffold
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
@@ -20,18 +23,27 @@ fun ListScreen(
     navigateToTaskScreen: (Int) -> Unit,
     shareViewModel: ShareViewModel
 ) {
-
     val searchAppBarState: SearchAppBarState by shareViewModel.searchAppBarState
     val searchTextState: String by shareViewModel.searchTextState
+
+    LaunchedEffect(key1 = true) {
+        Log.d("ListScreen", "launched effect")
+        shareViewModel.getAllTasks()
+    }
+
+    val allTasks by shareViewModel.listOfTaskStateFlow.collectAsState()
+    allTasks.forEach {
+        Log.d("ListScreen", it.title)
+    }
 
     Scaffold(
         topBar = {
              ListAppBar(
                  shareViewModel = shareViewModel,
                  searchAppBarState = searchAppBarState,
-                 searchText =searchTextState)
+                 searchText = searchTextState)
         },
-        content = {},
+        content = { ListContent(allTasks, navigateToTaskScreen) },
         floatingActionButton = {
             ListFab(navigateToTaskScreen = navigateToTaskScreen)
         }

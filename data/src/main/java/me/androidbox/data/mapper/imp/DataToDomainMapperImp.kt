@@ -10,7 +10,8 @@ class DataToDomainMapperImp @Inject constructor() : DataToDomainMapper<ToDoTaskM
         return TodoTaskEntity(
             model.id,
             model.title,
-            model.description
+            model.description,
+            model.priority
         )
     }
 }

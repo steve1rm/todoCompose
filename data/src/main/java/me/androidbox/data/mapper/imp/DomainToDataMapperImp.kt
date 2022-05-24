@@ -12,7 +12,7 @@ class DomainToDataMapperImp @Inject constructor() : DomainToDataMapper<TodoTaskE
             entity.id,
             entity.title,
             entity.description,
-            Priority.NONE
+            entity.priority
         )
     }
 }
