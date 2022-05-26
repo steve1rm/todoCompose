@@ -18,15 +18,31 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.todocompose.ui.theme.*
+import me.androidbox.todocompose.util.RequestState
 
 @Composable
-fun ListContent(listOfTodoTask: List<TodoTaskEntity>, navigateToTaskScreen: (taskId: Int) -> Unit) {
+fun ListContent(requestState: RequestState<List<TodoTaskEntity>>, navigateToTaskScreen: (taskId: Int) -> Unit) {
+
+    if(requestState is RequestState.Success) {
+        if (requestState.data.isNotEmpty()) {
+            DisplayTask(
+                listOfTodoTask = requestState.data,
+                navigateToTaskScreen = navigateToTaskScreen
+            )
+        } else {
+            EmptyContent()
+        }
+    }
+}
+
+@Composable
+fun DisplayTask(listOfTodoTask: List<TodoTaskEntity>, navigateToTaskScreen: (taskId: Int) -> Unit) {
     LazyColumn {
         items(
             items = listOfTodoTask,
             key = { task ->
                 task.id
-        }) { todoTaskEntity ->
+            }) { todoTaskEntity ->
             TaskItem(
                 todoTaskEntity = todoTaskEntity,
                 navigateToTaskScreen = navigateToTaskScreen)
@@ -68,10 +84,7 @@ fun TaskItem(
                     .align(Alignment.CenterVertically),
                     contentAlignment = Alignment.CenterEnd) {
                     Canvas(modifier = Modifier
-                        .width(PRIORITY_INDICATOR_SIZE)
-                        .height(
-                            PRIORITY_INDICATOR_SIZE
-                        )) {
+                        .size(PRIORITY_INDICATOR_SIZE)) {
                         drawCircle(color = Color.Blue)
                     }
                 }

@@ -9,6 +9,10 @@ val Purple500 = Color(0xFF6200EE)
 val Purple700 = Color(0xFF3700B3)
 val Teal200 = Color(0xFF03DAC5)
 
+val LightGray = Color(0xFFFCFCFC)
+val MediumGray = Color(0xFF9C9C9C)
+val DarkGray = Color(0xFF141414)
+
 val LowPriorityColor = Color(0xFF00C980)
 val MediumPriorityColor = Color(0xFFFFC114)
 val HighPriorityColor = Color(0xFFFF4646)
@@ -18,10 +22,10 @@ val Colors.taskItemTextColor: Color
     @Composable
     get() {
         return if(isLight) {
-            Color.DarkGray
+            DarkGray
         }
         else {
-            Color.LightGray
+            LightGray
         }
     }
 
@@ -32,7 +36,7 @@ val Colors.taskItemBackgroundColor: Color
             Color.White
         }
         else {
-            Color.DarkGray
+            DarkGray
         }
     }
 
@@ -54,7 +58,7 @@ val Colors.topAppBarContentColor: Color
             Color.White
         }
         else {
-            Color.LightGray
+            LightGray
         }
     }
 

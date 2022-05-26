@@ -5,4 +5,5 @@
     <string name="sort_tasks">Sort tasks</string>
     <string name="delete_all_tasks">Delete all tasks</string>
     <string name="title">Todo Tasks</string>
+    <string name="empty_data">There is not data to show</string>
 </resources>

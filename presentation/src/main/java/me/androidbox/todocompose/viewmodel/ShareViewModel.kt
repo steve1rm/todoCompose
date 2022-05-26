@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.domain.repository.TaskRepository
+import me.androidbox.todocompose.util.RequestState
 import me.androidbox.todocompose.util.SearchAppBarState
 import javax.inject.Inject
 
@@ -22,17 +23,26 @@ class ShareViewModel @Inject constructor(
     private val searchAppBarStateMutableState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState> = searchAppBarStateMutableState
 
-    private val listOfTaskMutableStateFlow = MutableStateFlow<List<TodoTaskEntity>>(emptyList())
-    val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
-
     private val searchTextMutableState = mutableStateOf("")
     val searchTextState = searchTextMutableState
 
+    private val listOfTaskMutableStateFlow = MutableStateFlow<RequestState<List<TodoTaskEntity>>>(RequestState.Idle)
+    val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
+
     fun getAllTasks() {
-        viewModelScope.launch {
-            taskRepository.fetchAllTask().collect { listOfTodoTask ->
-                listOfTaskMutableStateFlow.value = listOfTodoTask
+        listOfTaskMutableStateFlow.value = RequestState.Idle
+
+        try {
+            viewModelScope.launch {
+                listOfTaskMutableStateFlow.value = RequestState.Loading
+
+                taskRepository.fetchAllTask().collect { listOfTodoTask ->
+                    listOfTaskMutableStateFlow.value = RequestState.Success(listOfTodoTask)
+                }
             }
+        }
+        catch (exception: Exception) {
+            listOfTaskMutableStateFlow.value = RequestState.Failure(exception)
         }
     }
 

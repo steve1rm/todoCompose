@@ -32,9 +32,6 @@ fun ListScreen(
     }
 
     val allTasks by shareViewModel.listOfTaskStateFlow.collectAsState()
-    allTasks.forEach {
-        Log.d("ListScreen", it.title)
-    }
 
     Scaffold(
         topBar = {
