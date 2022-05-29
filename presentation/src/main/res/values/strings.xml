@@ -6,4 +6,9 @@
     <string name="delete_all_tasks">Delete all tasks</string>
     <string name="title">Todo Tasks</string>
     <string name="empty_data">There is not data to show</string>
+    <string name="add_task">Add Task</string>
+    <string name="close_task">Close task</string>
+    <string name="back_button">back button</string>
+    <string name="delete_task">Delete task</string>
+    <string name="update_task">Update task</string>
 </resources>

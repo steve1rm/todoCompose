@@ -6,13 +6,13 @@ import me.androidbox.todocompose.Constant.TASK_SCREEN
 import me.androidbox.todocompose.util.Action
 
 class Screen(navHostController: NavHostController) {
-    val list: (Action) -> Unit = { action ->
-        navHostController.navigate("list/${action.name}") {
+    val list: (action: Action) -> Unit = { action ->
+        navHostController.navigate(route = "list/${action.name}") {
             popUpTo(LIST_SCREEN) { inclusive = true}
         }
     }
 
-    val task: (Int) -> Unit = { taskId ->
-        navHostController.navigate("task/$taskId")
+    val task: (taskId: Int) -> Unit = { taskId ->
+        navHostController.navigate(route = "task/$taskId")
     }
 }

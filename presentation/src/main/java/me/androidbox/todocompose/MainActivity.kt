@@ -7,7 +7,7 @@ import androidx.activity.viewModels
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
-import me.androidbox.todocompose.navigation.navigation
+import me.androidbox.todocompose.navigation.Navigation
 import me.androidbox.todocompose.ui.theme.ToDoComposeTheme
 import me.androidbox.todocompose.viewmodel.ShareViewModel
 
@@ -22,7 +22,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ToDoComposeTheme {
                 navHostController = rememberNavController()
-                navigation(
+                Navigation(
                     navHostController = navHostController,
                     shareViewModel = shareViewModel)
             }

@@ -29,6 +29,9 @@ class ShareViewModel @Inject constructor(
     private val listOfTaskMutableStateFlow = MutableStateFlow<RequestState<List<TodoTaskEntity>>>(RequestState.Idle)
     val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
 
+    private val selectedTaskMutableStateFlow = MutableStateFlow<TodoTaskEntity?>(null)
+    val selectedTaskStateFlow = selectedTaskMutableStateFlow.asStateFlow()
+
     fun getAllTasks() {
         listOfTaskMutableStateFlow.value = RequestState.Idle
 
@@ -43,6 +46,14 @@ class ShareViewModel @Inject constructor(
         }
         catch (exception: Exception) {
             listOfTaskMutableStateFlow.value = RequestState.Failure(exception)
+        }
+    }
+
+    fun getSelectedTask(taskId: Int) {
+        viewModelScope.launch {
+            taskRepository.fetchSelectedTask(taskId).collect { todoTaskEntity ->
+                selectedTaskMutableStateFlow.value = todoTaskEntity
+            }
         }
     }
 

@@ -10,7 +10,7 @@ import me.androidbox.todocompose.navigation.destination.taskComposable
 import me.androidbox.todocompose.viewmodel.ShareViewModel
 
 @Composable
-fun navigation(navHostController: NavHostController, shareViewModel: ShareViewModel) {
+fun Navigation(navHostController: NavHostController, shareViewModel: ShareViewModel) {
     val screen = remember(navHostController) {
         Screen(navHostController = navHostController)
     }
@@ -22,7 +22,8 @@ fun navigation(navHostController: NavHostController, shareViewModel: ShareViewMo
         )
 
         taskComposable(
-            navigateToListScreen = screen.list
+            navigateToListScreen = screen.list,
+            shareViewModel = shareViewModel
         )
     }
 }
