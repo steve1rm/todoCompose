@@ -2,6 +2,7 @@ package me.androidbox.todocompose.ui.screen.task
 
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
+import me.androidbox.data.model.Priority
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.todocompose.util.Action
 import me.androidbox.todocompose.viewmodel.ShareViewModel
@@ -17,6 +18,13 @@ fun TaskScreen(navigateToListScreen: (Action) -> Unit,
                 selectedTask = selectedTaskEntity)
         },
         content = {
-
+            TaskContent(
+                title = "title",
+                onTitleChange = {},
+                description = "description",
+                onDescriptionChange = {},
+                priority = Priority.HIGH,
+                onPrioritySelected = {}
+            )
         })
 }

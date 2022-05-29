@@ -11,4 +11,7 @@
     <string name="back_button">back button</string>
     <string name="delete_task">Delete task</string>
     <string name="update_task">Update task</string>
+    <string name="drop_down_arrow_icon">Drop down arrow icon</string>
+    <string name="task_title">Title</string>
+    <string name="task_description">Description</string>
 </resources>
