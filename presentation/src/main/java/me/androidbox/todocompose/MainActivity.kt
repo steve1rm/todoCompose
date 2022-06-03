@@ -19,9 +19,11 @@ class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         setContent {
             ToDoComposeTheme {
                 navHostController = rememberNavController()
+
                 Navigation(
                     navHostController = navHostController,
                     shareViewModel = shareViewModel)

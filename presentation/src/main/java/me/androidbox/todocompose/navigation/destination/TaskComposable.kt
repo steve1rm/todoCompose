@@ -1,5 +1,6 @@
 package me.androidbox.todocompose.navigation.destination
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
@@ -28,6 +29,10 @@ fun NavGraphBuilder.taskComposable(
             shareViewModel.getSelectedTask(taskId)
             val selectedTask by shareViewModel.selectedTaskStateFlow.collectAsState()
 
+            LaunchedEffect(key1 = taskId, block = {
+                shareViewModel.updateSelectedTask(selectedTask)
+            })
+            
             TaskScreen(
                 navigateToListScreen = navigateToListScreen,
                 shareViewModel = shareViewModel,

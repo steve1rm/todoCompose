@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.data.model.Priority
+import me.androidbox.todocompose.Constant.MAX_TITLE_LENGTH
 import me.androidbox.todocompose.R
 import me.androidbox.todocompose.component.PriorityDropDown
 import me.androidbox.todocompose.ui.theme.LARGE_PADDING
@@ -36,7 +37,7 @@ fun TaskContent(
                 onTitleChange(_title)
             },
             label = {
-                Text(text = stringResource(R.string.task_title))
+                Text(text = stringResource(R.string.task_title), )
             },
             textStyle = MaterialTheme.typography.body1,
             singleLine = true)

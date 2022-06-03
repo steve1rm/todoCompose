@@ -9,8 +9,11 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import me.androidbox.data.model.Priority
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.domain.repository.TaskRepository
+import me.androidbox.todocompose.Constant.MAX_TITLE_LENGTH
+import me.androidbox.todocompose.component.PriorityItem
 import me.androidbox.todocompose.util.RequestState
 import me.androidbox.todocompose.util.SearchAppBarState
 import javax.inject.Inject
@@ -19,6 +22,11 @@ import javax.inject.Inject
 class ShareViewModel @Inject constructor(
     private val taskRepository: TaskRepository
 ): ViewModel() {
+
+    val id = mutableStateOf(0)
+    val title = mutableStateOf("")
+    val description = mutableStateOf("")
+    val priority = mutableStateOf(Priority.NONE)
 
     private val searchAppBarStateMutableState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState> = searchAppBarStateMutableState
@@ -63,5 +71,26 @@ class ShareViewModel @Inject constructor(
 
     fun updateSearchText(searchText: String) {
         searchTextMutableState.value = searchText
+    }
+
+    fun updateSelectedTask(todoTaskEntity: TodoTaskEntity?) {
+        if(todoTaskEntity != null) {
+            id.value = todoTaskEntity.id
+            title.value = todoTaskEntity.title
+            description.value = todoTaskEntity.description
+            priority.value = Priority.MEDIUM
+        }
+        else {
+            id.value = 0
+            title.value = ""
+            description.value = ""
+            priority.value = Priority.NONE
+        }
+    }
+
+    fun updateTitle(newTitle: String) {
+        if(newTitle.length < MAX_TITLE_LENGTH) {
+            title.value = newTitle
+        }
     }
 }
