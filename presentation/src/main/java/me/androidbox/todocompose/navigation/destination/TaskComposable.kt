@@ -29,7 +29,7 @@ fun NavGraphBuilder.taskComposable(
             shareViewModel.getSelectedTask(taskId)
             val selectedTask by shareViewModel.selectedTaskStateFlow.collectAsState()
 
-            LaunchedEffect(key1 = taskId, block = {
+            LaunchedEffect(key1 = selectedTask, block = {
                 shareViewModel.updateSelectedTask(selectedTask)
             })
             

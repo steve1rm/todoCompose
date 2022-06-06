@@ -1,19 +1,15 @@
 package me.androidbox.todocompose.ui.screen.list
 
-import androidx.compose.material.FloatingActionButton
-import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Scaffold
+import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import kotlinx.coroutines.launch
 import me.androidbox.todocompose.R
 import me.androidbox.todocompose.ui.theme.fabBackgroundColor
+import me.androidbox.todocompose.util.Action
 import me.androidbox.todocompose.util.SearchAppBarState
 import me.androidbox.todocompose.viewmodel.ShareViewModel
 
@@ -22,16 +18,28 @@ fun ListScreen(
     navigateToTaskScreen: (taskId: Int) -> Unit,
     shareViewModel: ShareViewModel
 ) {
-    val searchAppBarState: SearchAppBarState by shareViewModel.searchAppBarState
-    val searchTextState: String by shareViewModel.searchTextState
-
     LaunchedEffect(key1 = true) {
         shareViewModel.getAllTasks()
     }
 
+    val searchAppBarState: SearchAppBarState by shareViewModel.searchAppBarState
+    val searchTextState: String by shareViewModel.searchTextState
+    val action: Action by shareViewModel.actionMutableState
     val listAllTask by shareViewModel.listOfTaskStateFlow.collectAsState()
+    val scaffoldState = rememberScaffoldState()
+
+    shareViewModel.handleDatabaseAction(action)
+
+    DisplaySnackBar(
+        scaffoldState = scaffoldState,
+        handleDatabaseAction = {
+            shareViewModel.handleDatabaseAction(action)
+        }
+        , taskTitle = shareViewModel.title.value
+        , action = action)
 
     Scaffold(
+        scaffoldState = scaffoldState,
         topBar = {
             ListAppBar(
                 shareViewModel = shareViewModel,
@@ -61,4 +69,28 @@ fun ListFab(onFabClicked: (taskId: Int) -> Unit) {
             contentDescription = stringResource(R.string.add_task_button),
             tint = Color.White)
     }
+}
+
+@Composable
+fun DisplaySnackBar(
+    scaffoldState: ScaffoldState,
+    handleDatabaseAction: () -> Unit,
+    taskTitle: String,
+    action: Action
+) {
+
+    handleDatabaseAction()
+
+    val scope = rememberCoroutineScope()
+
+    LaunchedEffect(key1 = action, block = {
+        if(action != Action.NO_ACTION) {
+            scope.launch {
+                val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                    message = "${action.name}: $taskTitle",
+                    actionLabel = "OK"
+                )
+            }
+        }
+    })
 }
