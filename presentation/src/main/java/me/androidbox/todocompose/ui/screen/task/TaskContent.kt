@@ -2,7 +2,6 @@ package me.androidbox.todocompose.ui.screen.task
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -10,8 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import me.androidbox.data.model.Priority
-import me.androidbox.todocompose.Constant.MAX_TITLE_LENGTH
+import me.androidbox.todocompose.model.Priority
 import me.androidbox.todocompose.R
 import me.androidbox.todocompose.component.PriorityDropDown
 import me.androidbox.todocompose.ui.theme.LARGE_PADDING

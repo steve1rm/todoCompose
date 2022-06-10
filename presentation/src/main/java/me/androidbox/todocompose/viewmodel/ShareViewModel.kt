@@ -10,11 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import me.androidbox.data.model.Priority
+import me.androidbox.todocompose.model.Priority
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.domain.repository.TaskRepository
 import me.androidbox.todocompose.Constant.MAX_TITLE_LENGTH
-import me.androidbox.todocompose.component.PriorityItem
+import me.androidbox.todocompose.mapper.DomainToPresentationMapper
+import me.androidbox.todocompose.model.TodoTask
 import me.androidbox.todocompose.util.Action
 import me.androidbox.todocompose.util.RequestState
 import me.androidbox.todocompose.util.SearchAppBarState
@@ -22,7 +23,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShareViewModel @Inject constructor(
-    private val taskRepository: TaskRepository
+    private val taskRepository: TaskRepository,
+    private val domainToPresentationMapper: DomainToPresentationMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards TodoTask>
 ): ViewModel() {
 
     val actionMutableState = mutableStateOf(Action.NO_ACTION)
@@ -37,7 +39,7 @@ class ShareViewModel @Inject constructor(
     private val searchTextMutableState = mutableStateOf("")
     val searchTextState = searchTextMutableState
 
-    private val listOfTaskMutableStateFlow = MutableStateFlow<RequestState<List<TodoTaskEntity>>>(RequestState.Idle)
+    private val listOfTaskMutableStateFlow = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
     val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
 
     private val selectedTaskMutableStateFlow = MutableStateFlow<TodoTaskEntity?>(null)
@@ -50,7 +52,11 @@ class ShareViewModel @Inject constructor(
             viewModelScope.launch {
                 listOfTaskMutableStateFlow.value = RequestState.Loading
 
-                taskRepository.fetchAllTask().collect { listOfTodoTask ->
+                taskRepository.fetchAllTask().collect { listOfTodoTaskEntity ->
+                    val listOfTodoTask = listOfTodoTaskEntity.map { todoTaskEntity ->
+                        domainToPresentationMapper.map(todoTaskEntity)
+                    }
+
                     listOfTaskMutableStateFlow.value = RequestState.Success(listOfTodoTask)
                 }
             }

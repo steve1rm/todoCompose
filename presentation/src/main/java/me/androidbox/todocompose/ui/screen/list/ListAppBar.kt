@@ -1,6 +1,5 @@
 package me.androidbox.todocompose.ui.screen.list
 
-import android.util.Log
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -19,7 +18,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import me.androidbox.data.model.Priority
+import me.androidbox.todocompose.model.Priority
 import me.androidbox.todocompose.R
 import me.androidbox.todocompose.component.PriorityItem
 import me.androidbox.todocompose.ui.theme.LARGE_PADDING

@@ -11,17 +11,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import me.androidbox.domain.entity.TodoTaskEntity
+import me.androidbox.todocompose.model.Priority
+import me.androidbox.todocompose.model.TodoTask
 import me.androidbox.todocompose.ui.theme.*
 import me.androidbox.todocompose.util.RequestState
 
 @Composable
-fun ListContent(requestState: RequestState<List<TodoTaskEntity>>, navigateToTaskScreen: (taskId: Int) -> Unit) {
+fun ListContent(requestState: RequestState<List<TodoTask>>, navigateToTaskScreen: (taskId: Int) -> Unit) {
 
     if(requestState is RequestState.Success) {
         if (requestState.data.isNotEmpty()) {
@@ -36,7 +36,7 @@ fun ListContent(requestState: RequestState<List<TodoTaskEntity>>, navigateToTask
 }
 
 @Composable
-fun DisplayTask(listOfTodoTask: List<TodoTaskEntity>, navigateToTaskScreen: (taskId: Int) -> Unit) {
+fun DisplayTask(listOfTodoTask: List<TodoTask>, navigateToTaskScreen: (taskId: Int) -> Unit) {
     LazyColumn {
         items(
             items = listOfTodoTask,
@@ -44,7 +44,7 @@ fun DisplayTask(listOfTodoTask: List<TodoTaskEntity>, navigateToTaskScreen: (tas
                 task.id
             }) { todoTaskEntity ->
             TaskItem(
-                todoTaskEntity = todoTaskEntity,
+                todoTask = todoTaskEntity,
                 navigateToTaskScreen = navigateToTaskScreen)
         }
     }
@@ -53,7 +53,7 @@ fun DisplayTask(listOfTodoTask: List<TodoTaskEntity>, navigateToTaskScreen: (tas
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun TaskItem(
-    todoTaskEntity: TodoTaskEntity,
+    todoTask: TodoTask,
     navigateToTaskScreen: (taskId: Int) -> Unit
 ) {
     Surface(
@@ -62,7 +62,7 @@ fun TaskItem(
         shape = RectangleShape,
         elevation = TASK_ITEM_ELEVATION,
         onClick = {
-            navigateToTaskScreen(todoTaskEntity.id)
+            navigateToTaskScreen(todoTask.id)
         }
     ) {
         Column(modifier = Modifier
@@ -71,7 +71,7 @@ fun TaskItem(
             Row {
                 Text(
                     modifier = Modifier.weight(8F),
-                    text = todoTaskEntity.title,
+                    text = todoTask.title,
                     color = MaterialTheme.colors.taskItemTextColor,
                     style = MaterialTheme.typography.h5,
                     fontWeight = FontWeight.Bold,
@@ -85,14 +85,14 @@ fun TaskItem(
                     contentAlignment = Alignment.CenterEnd) {
                     Canvas(modifier = Modifier
                         .size(PRIORITY_INDICATOR_SIZE)) {
-                        drawCircle(color = Color.Blue)
+                        drawCircle(color = todoTask.priority.color)
                     }
                 }
             }
             Row {
                 Text(
                     modifier = Modifier.weight(8F),
-                    text = todoTaskEntity.description,
+                    text = todoTask.description,
                     color = MaterialTheme.colors.taskItemTextColor,
                     style = MaterialTheme.typography.subtitle1,
                     maxLines = 2,
@@ -107,11 +107,11 @@ fun TaskItem(
 @Preview
 fun TaskItemPreview() {
     TaskItem(
-        todoTaskEntity = TodoTaskEntity(
+        todoTask = TodoTask(
             id = 1,
             "This is the title",
             "This is the description and is displaying in the compose preview.",
-            1
+            Priority.LOW
         ), navigateToTaskScreen = {}
     )
 }

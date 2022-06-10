@@ -1,7 +1,6 @@
 package me.androidbox.data.mapper.imp
 
 import me.androidbox.data.mapper.DomainToDataMapper
-import me.androidbox.data.model.Priority
 import me.androidbox.data.model.ToDoTaskModel
 import me.androidbox.domain.entity.TodoTaskEntity
 import javax.inject.Inject

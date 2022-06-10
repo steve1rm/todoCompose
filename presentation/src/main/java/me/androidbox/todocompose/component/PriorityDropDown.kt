@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import me.androidbox.data.model.Priority
+import me.androidbox.todocompose.model.Priority
 import me.androidbox.todocompose.R
 import me.androidbox.todocompose.ui.theme.PRIORITY_DROP_DOWN_HEIGHT
 import me.androidbox.todocompose.ui.theme.PRIORITY_INDICATOR_SIZE
@@ -49,7 +49,7 @@ fun PriorityDropDown(
             modifier = Modifier
                 .size(PRIORITY_INDICATOR_SIZE)
                 .weight(1F)) {
-            drawCircle(color = Color.Blue)
+            drawCircle(color = priority.color)
         }
 
         Text(
@@ -103,5 +103,5 @@ fun PriorityDropDown(
 @Composable
 @Preview
 fun PriorityDropDownPreview() {
-    PriorityDropDown(priority = Priority.MEDIUM, onPrioritySelected = {})
+    PriorityDropDown(priority = Priority.LOW, onPrioritySelected = {})
 }

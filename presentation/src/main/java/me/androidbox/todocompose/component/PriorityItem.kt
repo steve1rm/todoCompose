@@ -1,7 +1,6 @@
 package me.androidbox.todocompose.component
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -11,8 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import me.androidbox.data.model.Priority
+import me.androidbox.todocompose.model.Priority
 import me.androidbox.todocompose.ui.theme.HighPriorityColor
 import me.androidbox.todocompose.ui.theme.LARGE_PADDING
 import me.androidbox.todocompose.ui.theme.PRIORITY_INDICATOR_SIZE
@@ -21,7 +19,7 @@ import me.androidbox.todocompose.ui.theme.PRIORITY_INDICATOR_SIZE
 fun PriorityItem(priority: Priority) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Canvas(modifier = Modifier.size(PRIORITY_INDICATOR_SIZE)) {
-            drawCircle(color = HighPriorityColor)
+            drawCircle(color = priority.color)
         }
         Text(
             modifier = Modifier.padding(start = LARGE_PADDING),
