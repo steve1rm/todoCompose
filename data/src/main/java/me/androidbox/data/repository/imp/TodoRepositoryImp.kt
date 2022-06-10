@@ -1,7 +1,6 @@
 package me.androidbox.data.repository.imp
 
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.*
 import me.androidbox.data.dao.ToDoDao
 import me.androidbox.data.mapper.DataToDomainMapper
 import me.androidbox.data.mapper.DomainToDataMapper
@@ -49,7 +48,7 @@ class TodoRepositoryImp @Inject constructor(
 
     override fun fetchSelectedTask(taskId: Int): Flow<TodoTaskEntity> {
         return toDoDao.getSelectedTask(taskId)
-            .map { todoTaskModel ->
+            .filterNotNull().map { todoTaskModel ->
                 dataToDomainMapper.map(todoTaskModel)
             }
     }

@@ -64,8 +64,12 @@ fun ExistingTaskAppBar(
         },
         backgroundColor = MaterialTheme.colors.topAppBarBackgroundColor,
         actions = {
-            DeleteAction(onDeleteClicked = { navigateToListScreen })
-            UpdateAction(onUpdateClicked = { navigateToListScreen })
+            DeleteAction(onDeleteClicked = {
+                navigateToListScreen(it)
+            })
+            UpdateAction(onUpdateClicked = {
+                navigateToListScreen(it)
+            })
         }
     )
 }

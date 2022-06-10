@@ -23,6 +23,7 @@ fun NavGraphBuilder.listComposable(
         })
     ) { navBackStackEntry ->
         val action = navBackStackEntry.arguments?.getString(LIST_ARGUMENT_KEY).toAction()
+        Log.d("ACTION", "$action")
 
         LaunchedEffect(key1 = action, block = {
             shareViewModel.handleDatabaseAction(action)
