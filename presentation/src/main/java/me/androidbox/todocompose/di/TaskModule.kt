@@ -1,12 +1,15 @@
-package me.androidbox.domain.di
+package me.androidbox.todocompose.di
 
 import dagger.Module
 import dagger.Provides
+import dagger.hilt.InstallIn
+import dagger.hilt.components.SingletonComponent
 import me.androidbox.domain.repository.TaskRepository
 import me.androidbox.domain.usecase.*
 import me.androidbox.domain.usecase.imp.*
 
 @Module
+@InstallIn(SingletonComponent::class)
 interface TaskModule {
 
     companion object {
@@ -17,8 +20,18 @@ interface TaskModule {
         }
 
         @Provides
+        fun fetchSelectedTaskUseCaseImp(taskRepository: TaskRepository): FetchSelectedTaskUseCase {
+            return FetchSelectedTaskUseCaseImp(taskRepository)
+        }
+
+        @Provides
         fun provideAddTaskUseCaseImp(taskRepository: TaskRepository): AddTaskUseCase {
             return AddTaskUseCaseImp(taskRepository)
+        }
+
+        @Provides
+        fun provideUpdateTaskUseCaseImp(taskRepository: TaskRepository): UpdateTaskUseCase {
+            return UpdateTaskUseCaseImp(taskRepository)
         }
 
         @Provides

@@ -12,6 +12,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.domain.repository.TaskRepository
+import me.androidbox.domain.usecase.*
 import me.androidbox.todocompose.Constant.MAX_TITLE_LENGTH
 import me.androidbox.todocompose.mapper.DomainToPresentationMapper
 import me.androidbox.todocompose.mapper.PresentationToDomainMapper
@@ -24,7 +25,11 @@ import javax.inject.Inject
 
 @HiltViewModel
 class ShareViewModel @Inject constructor(
-    private val taskRepository: TaskRepository,
+    private val addTaskUseCase: AddTaskUseCase,
+    private val fetchAllTaskUseCase: FetchAllTaskUseCase,
+    private val fetchSelectedTaskUseCase: FetchSelectedTaskUseCase,
+    private val updateTaskUseCase: UpdateTaskUseCase,
+    private val deleteTaskUseCase: DeleteTaskUseCase,
     private val domainToPresentationMapper: DomainToPresentationMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards TodoTask>,
     private val presentationToDomainMapper: PresentationToDomainMapper<@JvmSuppressWildcards TodoTask, @JvmSuppressWildcards TodoTaskEntity>
 ): ViewModel() {
@@ -54,7 +59,7 @@ class ShareViewModel @Inject constructor(
             viewModelScope.launch {
                 listOfTaskMutableStateFlow.value = RequestState.Loading
 
-                taskRepository.fetchAllTask().collect { listOfTodoTaskEntity ->
+                fetchAllTaskUseCase.execute().collect { listOfTodoTaskEntity ->
                     val listOfTodoTask = listOfTodoTaskEntity.map { todoTaskEntity ->
                         domainToPresentationMapper.map(todoTaskEntity)
                     }
@@ -70,7 +75,7 @@ class ShareViewModel @Inject constructor(
 
     fun getSelectedTask(taskId: Int) {
         viewModelScope.launch {
-            taskRepository.fetchSelectedTask(taskId).collect { todoTaskEntity ->
+            fetchSelectedTaskUseCase.execute(taskId).collect { todoTaskEntity ->
                 selectedTaskMutableStateFlow.value = todoTaskEntity
             }
         }
@@ -85,40 +90,40 @@ class ShareViewModel @Inject constructor(
     }
 
     private fun addTask() {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch {
             val todoTask = TodoTask(
                 title = title.value,
                 description = description.value,
                 priority = priority.value
             )
 
-            taskRepository.addTask(presentationToDomainMapper.map(todoTask))
+            addTaskUseCase.execute(presentationToDomainMapper.map(todoTask))
         }
     }
 
     private fun updateTask() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val todoTask = TodoTaskEntity(
+        viewModelScope.launch {
+            val todoTask = TodoTask(
                 id = id.value,
                 title = title.value,
                 description = description.value,
-                priority = priority.value.ordinal
+                priority = priority.value
             )
 
-            taskRepository.updateTask(todoTask)
+            updateTaskUseCase.execute(presentationToDomainMapper.map(todoTask))
         }
     }
 
     private fun deleteTask() {
-        viewModelScope.launch(Dispatchers.IO) {
-            val todoTask = TodoTaskEntity(
+        viewModelScope.launch {
+            val todoTask = TodoTask(
                 id = id.value,
                 title = title.value,
                 description = description.value,
-                priority = priority.value.ordinal
+                priority = priority.value
             )
 
-            taskRepository.deleteTask(todoTask)
+            deleteTaskUseCase.execute(presentationToDomainMapper.map(todoTask))
         }
     }
 
@@ -149,10 +154,12 @@ class ShareViewModel @Inject constructor(
 
     fun updateSelectedTask(todoTaskEntity: TodoTaskEntity?) {
         if(todoTaskEntity != null) {
-            id.value = todoTaskEntity.id
-            title.value = todoTaskEntity.title
-            description.value = todoTaskEntity.description
-            priority.value = Priority.MEDIUM
+            val todoTask = domainToPresentationMapper.map(todoTaskEntity)
+
+            id.value = todoTask.id
+            title.value = todoTask.title
+            description.value = todoTask.description
+            priority.value = todoTask.priority
         }
         else {
             id.value = 0
