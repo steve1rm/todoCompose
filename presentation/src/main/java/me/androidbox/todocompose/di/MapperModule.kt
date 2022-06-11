@@ -6,7 +6,9 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.todocompose.mapper.DomainToPresentationMapper
+import me.androidbox.todocompose.mapper.PresentationToDomainMapper
 import me.androidbox.todocompose.mapper.imp.DomainToPresentationMapperImp
+import me.androidbox.todocompose.mapper.imp.PresentationToDomainMapperImp
 import me.androidbox.todocompose.model.TodoTask
 
 @Module
@@ -16,4 +18,8 @@ interface MapperModule {
     @Binds
     fun bindsDomainToPresentationMapper(domainToPresentationMapperImp: DomainToPresentationMapperImp)
             : DomainToPresentationMapper<TodoTaskEntity, TodoTask>
+
+    @Binds
+    fun bindsPresentationToDomainMapper(presentationToDomainMapperImp: PresentationToDomainMapperImp)
+            : PresentationToDomainMapper<TodoTask, TodoTaskEntity>
 }

@@ -11,7 +11,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.todocompose.model.Priority
-import me.androidbox.todocompose.ui.theme.HighPriorityColor
 import me.androidbox.todocompose.ui.theme.LARGE_PADDING
 import me.androidbox.todocompose.ui.theme.PRIORITY_INDICATOR_SIZE
 

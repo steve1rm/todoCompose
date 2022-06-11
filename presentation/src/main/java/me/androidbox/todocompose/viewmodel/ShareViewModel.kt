@@ -10,11 +10,12 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import me.androidbox.todocompose.model.Priority
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.domain.repository.TaskRepository
 import me.androidbox.todocompose.Constant.MAX_TITLE_LENGTH
 import me.androidbox.todocompose.mapper.DomainToPresentationMapper
+import me.androidbox.todocompose.mapper.PresentationToDomainMapper
+import me.androidbox.todocompose.model.Priority
 import me.androidbox.todocompose.model.TodoTask
 import me.androidbox.todocompose.util.Action
 import me.androidbox.todocompose.util.RequestState
@@ -24,7 +25,8 @@ import javax.inject.Inject
 @HiltViewModel
 class ShareViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
-    private val domainToPresentationMapper: DomainToPresentationMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards TodoTask>
+    private val domainToPresentationMapper: DomainToPresentationMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards TodoTask>,
+    private val presentationToDomainMapper: PresentationToDomainMapper<@JvmSuppressWildcards TodoTask, @JvmSuppressWildcards TodoTaskEntity>
 ): ViewModel() {
 
     val actionMutableState = mutableStateOf(Action.NO_ACTION)
@@ -84,13 +86,13 @@ class ShareViewModel @Inject constructor(
 
     private fun addTask() {
         viewModelScope.launch(Dispatchers.IO) {
-            val todoTask = TodoTaskEntity(
+            val todoTask = TodoTask(
                 title = title.value,
                 description = description.value,
-                priority = priority.value.ordinal
+                priority = priority.value
             )
 
-            taskRepository.addTask(todoTask)
+            taskRepository.addTask(presentationToDomainMapper.map(todoTask))
         }
     }
 

@@ -13,10 +13,10 @@ class DomainToPresentationMapperImp @Inject constructor() : DomainToPresentation
             title = entity.title,
             description = entity.description,
             priority = when(entity.priority) {
-                1 -> Priority.HIGH
-                2 -> Priority.MEDIUM
-                3 -> Priority.LOW
-                4 -> Priority.NONE
+                0 -> Priority.HIGH
+                1 -> Priority.MEDIUM
+                2 -> Priority.LOW
+                3 -> Priority.NONE
                 else -> Priority.NONE
             }
         )

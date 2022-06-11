@@ -1,5 +1,5 @@
 package me.androidbox.todocompose.mapper
 
-interface DomainToPresentationMapper<in E, out P> {
-    fun map(entity: E): P
+interface DomainToPresentationMapper<in E, out M> {
+    fun map(entity: E): M
 }
