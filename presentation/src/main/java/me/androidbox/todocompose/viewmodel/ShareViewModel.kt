@@ -34,11 +34,20 @@ class ShareViewModel @Inject constructor(
     private val presentationToDomainMapper: PresentationToDomainMapper<@JvmSuppressWildcards TodoTask, @JvmSuppressWildcards TodoTaskEntity>
 ): ViewModel() {
 
-    val actionMutableState = mutableStateOf(Action.NO_ACTION)
-    val id = mutableStateOf(0)
-    val title = mutableStateOf("")
-    val description = mutableStateOf("")
-    val priority = mutableStateOf(Priority.NONE)
+    var actionMutableState = mutableStateOf(Action.NO_ACTION)
+        private set
+
+    var id = mutableStateOf(0)
+        private set
+
+    var title = mutableStateOf("")
+        private set
+
+    var description = mutableStateOf("")
+        private set
+
+    var priority = mutableStateOf(Priority.NONE)
+        private set
 
     private val searchAppBarStateMutableState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
     val searchAppBarState: State<SearchAppBarState> = searchAppBarStateMutableState
