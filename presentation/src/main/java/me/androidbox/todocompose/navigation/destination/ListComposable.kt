@@ -26,7 +26,7 @@ fun NavGraphBuilder.listComposable(
         Log.d("ACTION", "$action")
 
         LaunchedEffect(key1 = action, block = {
-            shareViewModel.handleDatabaseAction(action)
+            shareViewModel.actionMutableState.value = action
         })
 
         ListScreen(

@@ -28,6 +28,7 @@ class ShareViewModel @Inject constructor(
     private val fetchSelectedTaskUseCase: FetchSelectedTaskUseCase,
     private val updateTaskUseCase: UpdateTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
+    private val deleteAllTaskUseCase: DeleteAllTaskUseCase,
     private val domainToPresentationMapper: DomainToPresentationMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards TodoTask>,
     private val presentationToDomainMapper: PresentationToDomainMapper<@JvmSuppressWildcards TodoTask, @JvmSuppressWildcards TodoTaskEntity>
 ): ViewModel() {
@@ -130,7 +131,14 @@ class ShareViewModel @Inject constructor(
                 priority = priority.value
             )
 
-            deleteTaskUseCase.execute(presentationToDomainMapper.map(todoTask))
+            deleteTaskUseCase.execute(
+                todoTaskEntity = presentationToDomainMapper.map(todoTask))
+        }
+    }
+
+    private fun deleteAllTask() {
+        viewModelScope.launch {
+            deleteAllTaskUseCase.execute()
         }
     }
 
@@ -146,14 +154,12 @@ class ShareViewModel @Inject constructor(
                 deleteTask()
             }
             Action.DELETE_ALL -> {
-                TODO()
+                deleteAllTask()
             }
             Action.UNDO -> {
                 TODO()
             }
-            Action.NO_ACTION -> {
-                
-            }
+            else -> {}
         }
 
         actionMutableState.value = Action.NO_ACTION

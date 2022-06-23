@@ -28,8 +28,6 @@ fun ListScreen(
     val listAllTask by shareViewModel.listOfTaskStateFlow.collectAsState()
     val scaffoldState = rememberScaffoldState()
 
-    shareViewModel.handleDatabaseAction(action)
-
     DisplaySnackBar(
         scaffoldState = scaffoldState,
         handleDatabaseAction = {
@@ -78,13 +76,12 @@ fun DisplaySnackBar(
     taskTitle: String,
     action: Action
 ) {
-
     handleDatabaseAction()
 
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(key1 = action, block = {
-        if(action != Action.NO_ACTION) {
+        if (action != Action.NO_ACTION) {
             scope.launch {
                 val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
                     message = "${action.name}: $taskTitle",

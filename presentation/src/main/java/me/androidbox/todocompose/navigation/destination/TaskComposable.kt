@@ -7,6 +7,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.todocompose.Constant.TASK_ARGUMENT_KEY
 import me.androidbox.todocompose.Constant.TASK_SCREEN
 import me.androidbox.todocompose.ui.screen.task.TaskScreen
@@ -25,11 +26,10 @@ fun NavGraphBuilder.taskComposable(
     ) { navBackStackEntry ->
         val taskId = navBackStackEntry.arguments?.getInt(TASK_ARGUMENT_KEY) ?: -1
         shareViewModel.getSelectedTask(taskId)
-
         val selectedTask by shareViewModel.selectedTaskStateFlow.collectAsState()
 
         LaunchedEffect(key1 = selectedTask, block = {
-            if (selectedTask != null || taskId == -1) {
+            if(selectedTask != null || taskId == -1) {
                 shareViewModel.updateSelectedTask(selectedTask)
             }
         })
