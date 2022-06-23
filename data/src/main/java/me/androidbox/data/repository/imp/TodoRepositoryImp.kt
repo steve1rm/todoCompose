@@ -46,10 +46,14 @@ class TodoRepositoryImp @Inject constructor(
         toDoDao.updateTask(todoTaskModel)
     }
 
-    override fun fetchSelectedTask(taskId: Int): Flow<TodoTaskEntity> {
+    override fun fetchSelectedTask(taskId: Int): Flow<TodoTaskEntity?> {
         return toDoDao.getSelectedTask(taskId)
-            .filterNotNull().map { todoTaskModel ->
-                dataToDomainMapper.map(todoTaskModel)
+            .map { todoTaskModel ->
+                if(todoTaskModel != null) {
+                    dataToDomainMapper.map(todoTaskModel)
+                } else {
+                    null
+                }
             }
     }
 

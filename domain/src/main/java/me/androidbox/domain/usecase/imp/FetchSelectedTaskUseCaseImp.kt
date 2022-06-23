@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class FetchSelectedTaskUseCaseImp @Inject constructor(private val taskRepository: TaskRepository) :
     FetchSelectedTaskUseCase {
-    override fun execute(taskId: Int): Flow<TodoTaskEntity> {
+    override fun execute(taskId: Int): Flow<TodoTaskEntity?> {
         return taskRepository.fetchSelectedTask(taskId)
     }
 }

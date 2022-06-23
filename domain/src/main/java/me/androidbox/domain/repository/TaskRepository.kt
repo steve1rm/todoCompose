@@ -8,7 +8,7 @@ interface TaskRepository {
     suspend fun addTask(todoTaskEntity: TodoTaskEntity)
     suspend fun deleteAllTask()
     suspend fun deleteTask(todoTaskEntity: TodoTaskEntity)
-    fun fetchSelectedTask(taskId: Int): Flow<TodoTaskEntity>
+    fun fetchSelectedTask(taskId: Int): Flow<TodoTaskEntity?>
     fun searchDatabase(searchQuery: String): Flow<List<TodoTaskEntity>>
     fun sortByHighPriority(): Flow<List<TodoTaskEntity>>
     fun sortByLowPriority(): Flow<List<TodoTaskEntity>>
