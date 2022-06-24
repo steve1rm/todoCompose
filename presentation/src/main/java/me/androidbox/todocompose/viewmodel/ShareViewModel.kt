@@ -57,7 +57,7 @@ class ShareViewModel @Inject constructor(
     private val listOfTaskMutableStateFlow = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
     val listOfTaskStateFlow = listOfTaskMutableStateFlow.asStateFlow()
 
-    private val selectedTaskMutableStateFlow = MutableStateFlow<TodoTaskEntity?>(null)
+    private val selectedTaskMutableStateFlow = MutableStateFlow<TodoTask?>(null)
     val selectedTaskStateFlow = selectedTaskMutableStateFlow.asStateFlow()
 
     fun getAllTasks() {
@@ -84,7 +84,13 @@ class ShareViewModel @Inject constructor(
     fun getSelectedTask(taskId: Int) {
         viewModelScope.launch {
             fetchSelectedTaskUseCase.execute(taskId).collect { todoTaskEntity ->
-                selectedTaskMutableStateFlow.value = todoTaskEntity
+                if(todoTaskEntity == null) {
+                    selectedTaskMutableStateFlow.value = null
+                }
+                else {
+                    val todoTask = domainToPresentationMapper.map(todoTaskEntity)
+                    selectedTaskMutableStateFlow.value = todoTask
+                }
             }
         }
     }
@@ -165,10 +171,8 @@ class ShareViewModel @Inject constructor(
         actionMutableState.value = Action.NO_ACTION
     }
 
-    fun updateSelectedTask(todoTaskEntity: TodoTaskEntity?) {
-        if(todoTaskEntity != null) {
-            val todoTask = domainToPresentationMapper.map(todoTaskEntity)
-
+    fun updateSelectedTask(todoTask: TodoTask?) {
+        if(todoTask != null) {
             id.value = todoTask.id
             title.value = todoTask.title
             description.value = todoTask.description

@@ -12,12 +12,14 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.todocompose.R
+import me.androidbox.todocompose.model.Priority
+import me.androidbox.todocompose.model.TodoTask
 import me.androidbox.todocompose.ui.theme.topAppBarBackgroundColor
 import me.androidbox.todocompose.ui.theme.topAppBarContentColor
 import me.androidbox.todocompose.util.Action
 
 @Composable
-fun TaskAppBar(navigateToListScreen: (Action) -> Unit, selectedTask: TodoTaskEntity?) {
+fun TaskAppBar(navigateToListScreen: (Action) -> Unit, selectedTask: TodoTask?) {
     if(selectedTask == null) {
         NewTaskAppBar(navigateToListScreen = navigateToListScreen)
     }
@@ -48,7 +50,7 @@ fun NewTaskAppBar(
 
 @Composable
 fun ExistingTaskAppBar(
-    selectedTask: TodoTaskEntity,
+    selectedTask: TodoTask,
     navigateToListScreen: (Action) -> Unit
 ) {
     TopAppBar(
@@ -135,7 +137,7 @@ fun TaskAppBarPreview() {
 @Composable
 @Preview
 fun ExistingAppBarPreview() {
-    ExistingTaskAppBar(selectedTask = TodoTaskEntity(0, "This a single task", "This the task description", 2), navigateToListScreen = { })
+    ExistingTaskAppBar(selectedTask = TodoTask(0, "This a single task", "This the task description", Priority.MEDIUM), navigateToListScreen = { })
 }
 
 

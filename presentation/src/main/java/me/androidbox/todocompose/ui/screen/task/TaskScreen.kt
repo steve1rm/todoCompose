@@ -6,14 +6,14 @@ import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import me.androidbox.domain.entity.TodoTaskEntity
+import me.androidbox.todocompose.model.TodoTask
 import me.androidbox.todocompose.util.Action
 import me.androidbox.todocompose.viewmodel.ShareViewModel
 
 @Composable
 fun TaskScreen(navigateToListScreen: (Action) -> Unit,
                shareViewModel: ShareViewModel,
-               selectedTaskEntity: TodoTaskEntity?) {
+               selectedTaskEntity: TodoTask?) {
 
     val title by shareViewModel.title
     val description by shareViewModel.description
