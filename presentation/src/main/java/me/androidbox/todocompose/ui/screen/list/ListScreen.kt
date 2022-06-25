@@ -26,15 +26,20 @@ fun ListScreen(
     val searchTextState: String by shareViewModel.searchTextState
     val action: Action by shareViewModel.actionMutableState
     val listAllTask by shareViewModel.listOfTaskStateFlow.collectAsState()
+    val searchAllTask by shareViewModel.searchTaskStateFlow.collectAsState()
+
     val scaffoldState = rememberScaffoldState()
 
     DisplaySnackBar(
         scaffoldState = scaffoldState,
         handleDatabaseAction = {
             shareViewModel.handleDatabaseAction(action)
-        }
-        , taskTitle = shareViewModel.title.value
-        , action = action)
+        },
+        taskTitle = shareViewModel.title.value,
+        action = action,
+        onUndoClicked = { action ->
+            shareViewModel.actionMutableState.value = action
+    })
 
     Scaffold(
         scaffoldState = scaffoldState,
@@ -47,6 +52,8 @@ fun ListScreen(
         content = {
             ListContent(
                 listAllTask,
+                searchAllTask,
+                searchAppBarState,
                 navigateToTaskScreen)
         },
         floatingActionButton = {
@@ -73,6 +80,7 @@ fun ListFab(onFabClicked: (taskId: Int) -> Unit) {
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
     handleDatabaseAction: () -> Unit,
+    onUndoClicked: (Action) -> Unit,
     taskTitle: String,
     action: Action
 ) {
@@ -83,11 +91,35 @@ fun DisplaySnackBar(
     LaunchedEffect(key1 = action, block = {
         if (action != Action.NO_ACTION) {
             scope.launch {
-                val snackbarResult = scaffoldState.snackbarHostState.showSnackbar(
+                val snackBarResult = scaffoldState.snackbarHostState.showSnackbar(
                     message = "${action.name}: $taskTitle",
-                    actionLabel = "OK"
+                    actionLabel = setActionLabel(action)
                 )
+
+                undoDeletedTask(
+                    action,
+                    snackBarResult,
+                    onUndoClicked)
             }
         }
     })
+}
+
+private fun setActionLabel(action: Action): String {
+    return if(action.name == "DELETE") {
+        "UNDO"
+    }
+    else {
+        "OK"
+    }
+}
+
+private fun undoDeletedTask(
+    action: Action,
+    snackBarResult: SnackbarResult,
+    onUndoClicked: (Action) -> Unit
+) {
+    if(snackBarResult == SnackbarResult.ActionPerformed && action == Action.DELETE) {
+        onUndoClicked(Action.UNDO)
+    }
 }

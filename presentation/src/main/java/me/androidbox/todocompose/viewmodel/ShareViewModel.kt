@@ -29,6 +29,7 @@ class ShareViewModel @Inject constructor(
     private val updateTaskUseCase: UpdateTaskUseCase,
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val deleteAllTaskUseCase: DeleteAllTaskUseCase,
+    private val searchDatabaseUseCase: SearchDatabaseUseCase,
     private val domainToPresentationMapper: DomainToPresentationMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards TodoTask>,
     private val presentationToDomainMapper: PresentationToDomainMapper<@JvmSuppressWildcards TodoTask, @JvmSuppressWildcards TodoTaskEntity>
 ): ViewModel() {
@@ -59,6 +60,30 @@ class ShareViewModel @Inject constructor(
 
     private val selectedTaskMutableStateFlow = MutableStateFlow<TodoTask?>(null)
     val selectedTaskStateFlow = selectedTaskMutableStateFlow.asStateFlow()
+
+    private val _searchListOfTodoTaskMutableStateFlow = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
+    val searchTaskStateFlow = _searchListOfTodoTaskMutableStateFlow.asStateFlow()
+
+    fun searchDatabase(searchQuery: String) {
+        _searchListOfTodoTaskMutableStateFlow.value = RequestState.Loading
+
+        try {
+            viewModelScope.launch {
+                searchDatabaseUseCase.execute("%$searchQuery%").collect { listOfTodoTaskEntity ->
+                    val listOfTodoTask = listOfTodoTaskEntity.map { todoTaskEntity ->
+                        domainToPresentationMapper.map(todoTaskEntity)
+                    }
+
+                    _searchListOfTodoTaskMutableStateFlow.value = RequestState.Success(listOfTodoTask)
+                }
+            }
+        }
+        catch (exception: Exception) {
+            _searchListOfTodoTaskMutableStateFlow.value = RequestState.Failure(exception)
+        }
+
+        searchAppBarStateMutableState.value = SearchAppBarState.TRIGGERED
+    }
 
     fun getAllTasks() {
         listOfTaskMutableStateFlow.value = RequestState.Idle
@@ -113,6 +138,8 @@ class ShareViewModel @Inject constructor(
 
             addTaskUseCase.execute(presentationToDomainMapper.map(todoTask))
         }
+
+        searchAppBarStateMutableState.value = SearchAppBarState.CLOSED
     }
 
     private fun updateTask() {
@@ -163,7 +190,7 @@ class ShareViewModel @Inject constructor(
                 deleteAllTask()
             }
             Action.UNDO -> {
-                TODO()
+                addTask()
             }
             else -> {}
         }

@@ -19,19 +19,44 @@ import me.androidbox.todocompose.model.Priority
 import me.androidbox.todocompose.model.TodoTask
 import me.androidbox.todocompose.ui.theme.*
 import me.androidbox.todocompose.util.RequestState
+import me.androidbox.todocompose.util.SearchAppBarState
 
 @Composable
-fun ListContent(requestState: RequestState<List<TodoTask>>, navigateToTaskScreen: (taskId: Int) -> Unit) {
+fun ListContent(
+    listOfTask: RequestState<List<TodoTask>>,
+    listOfSearchTask: RequestState<List<TodoTask>>,
+    searchAppBarState: SearchAppBarState,
+    navigateToTaskScreen: (taskId: Int) -> Unit) {
 
-    if(requestState is RequestState.Success) {
-        if (requestState.data.isNotEmpty()) {
-            DisplayTask(
-                listOfTodoTask = requestState.data,
-                navigateToTaskScreen = navigateToTaskScreen
-            )
-        } else {
-            EmptyContent()
+    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
+        if (listOfSearchTask is RequestState.Success) {
+            HandleListContent(
+                listOfTask = listOfSearchTask.data,
+                navigateToTaskScreen = navigateToTaskScreen)
         }
+    }
+    else {
+        if (listOfTask is RequestState.Success) {
+            HandleListContent(
+                listOfTask = listOfTask.data,
+                navigateToTaskScreen = navigateToTaskScreen)
+        }
+    }
+}
+
+@Composable
+fun HandleListContent(
+    listOfTask: List<TodoTask>,
+    navigateToTaskScreen: (taskId: Int) -> Unit) {
+
+    if (listOfTask.isEmpty()) {
+        EmptyContent()
+    }
+    else {
+        DisplayTask(
+            listOfTodoTask = listOfTask,
+            navigateToTaskScreen = navigateToTaskScreen
+        )
     }
 }
 
