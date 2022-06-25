@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import me.androidbox.todocompose.model.Priority
 import me.androidbox.todocompose.R
+import me.androidbox.todocompose.component.DisplayAlertDialog
 import me.androidbox.todocompose.component.PriorityItem
 import me.androidbox.todocompose.ui.theme.LARGE_PADDING
 import me.androidbox.todocompose.ui.theme.TOP_APP_BAR_HEIGHT
@@ -85,10 +86,26 @@ fun DefaultListAppBar(
 }
 
 @Composable
-fun ListAppBarActions(onSearchBarClicked: () -> Unit, onSortClicked: (Priority) -> Unit, onDeleteAllClicked: () -> Unit) {
+fun ListAppBarActions(
+    onSearchBarClicked: () -> Unit,
+    onSortClicked: (Priority) -> Unit,
+    onDeleteAllClicked: () -> Unit
+) {
+    var shouldOpenAlertDialog by remember { mutableStateOf(false) }
+
+    DisplayAlertDialog(
+        title = stringResource(R.string.remove_all_tasks),
+        message = stringResource(R.string.remove_all_tasks_confirm),
+        shouldOpenDialog = shouldOpenAlertDialog,
+        closeDialog = { shouldOpenAlertDialog = false },
+        onYesClicked = { onDeleteAllClicked() }
+    )
+
     SearchAction(onSearchBarClicked = onSearchBarClicked)
     SortAction(onSortClicked = onSortClicked)
-    DeleteAllAction(onDeleteAllClicked = onDeleteAllClicked)
+    DeleteAllAction(onDeleteAllClicked = {
+        shouldOpenAlertDialog = true
+    })
 }
 
 @Composable
