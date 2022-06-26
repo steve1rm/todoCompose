@@ -103,5 +103,5 @@ fun PriorityDropDown(
 @Composable
 @Preview
 fun PriorityDropDownPreview() {
-    PriorityDropDown(priority = Priority.LOW, onPrioritySelected = {})
+    PriorityDropDown(priority = Priority.MEDIUM, onPrioritySelected = {})
 }

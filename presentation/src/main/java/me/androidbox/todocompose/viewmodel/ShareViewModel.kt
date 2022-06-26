@@ -6,8 +6,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import me.androidbox.domain.entity.TodoTaskEntity
 import me.androidbox.domain.usecase.*
@@ -19,6 +18,7 @@ import me.androidbox.todocompose.model.TodoTask
 import me.androidbox.todocompose.util.Action
 import me.androidbox.todocompose.util.RequestState
 import me.androidbox.todocompose.util.SearchAppBarState
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -30,6 +30,10 @@ class ShareViewModel @Inject constructor(
     private val deleteTaskUseCase: DeleteTaskUseCase,
     private val deleteAllTaskUseCase: DeleteAllTaskUseCase,
     private val searchDatabaseUseCase: SearchDatabaseUseCase,
+    private val readSortStateUseCase: ReadSortStateUseCase,
+    private val persistSortStateUseCase: PersistSortStateUseCase,
+    private val sortByLowPriorityUseCase: SortByLowPriorityUseCase,
+    private val sortByHighPriorityUseCase: SortByHighPriorityUseCase,
     private val domainToPresentationMapper: DomainToPresentationMapper<@JvmSuppressWildcards TodoTaskEntity, @JvmSuppressWildcards TodoTask>,
     private val presentationToDomainMapper: PresentationToDomainMapper<@JvmSuppressWildcards TodoTask, @JvmSuppressWildcards TodoTaskEntity>
 ): ViewModel() {
@@ -46,7 +50,7 @@ class ShareViewModel @Inject constructor(
     var description = mutableStateOf("")
         private set
 
-    var priority = mutableStateOf(Priority.NONE)
+    var priority = mutableStateOf(Priority.LOW)
         private set
 
     private val searchAppBarStateMutableState: MutableState<SearchAppBarState> = mutableStateOf(SearchAppBarState.CLOSED)
@@ -63,6 +67,31 @@ class ShareViewModel @Inject constructor(
 
     private val _searchListOfTodoTaskMutableStateFlow = MutableStateFlow<RequestState<List<TodoTask>>>(RequestState.Idle)
     val searchTaskStateFlow = _searchListOfTodoTaskMutableStateFlow.asStateFlow()
+
+    private val _sortMutableStateFlow: MutableStateFlow<RequestState<Priority>> = MutableStateFlow(RequestState.Idle)
+    val sortStateFlow = _sortMutableStateFlow.asStateFlow()
+
+    val sortByLowPriorityStateFlow: StateFlow<List<TodoTask>> =
+        sortByLowPriorityUseCase.execute().map { listOfTodoTaskEntity ->
+            listOfTodoTaskEntity.map { todoTaskEntity ->
+                domainToPresentationMapper.map(todoTaskEntity)
+            }
+        }.stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.WhileSubscribed(),
+                emptyList()
+            )
+
+    val sortByHighPriorityStateFlow: StateFlow<List<TodoTask>> =
+        sortByHighPriorityUseCase.execute().map { listOfTodoTaskEntity ->
+            listOfTodoTaskEntity.map { todoTaskEntity ->
+                domainToPresentationMapper.map(todoTaskEntity)
+            }
+        }.stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(),
+            emptyList()
+        )
 
     fun searchDatabase(searchQuery: String) {
         _searchListOfTodoTaskMutableStateFlow.value = RequestState.Loading
@@ -221,5 +250,30 @@ class ShareViewModel @Inject constructor(
 
     fun hasValidField(): Boolean {
         return title.value.isNotEmpty() && description.value.isNotEmpty()
+    }
+
+    fun persistSortingState(priority: Priority) {
+        viewModelScope.launch {
+            persistSortStateUseCase.execute(priority.name)
+        }
+    }
+
+    fun readSortState() {
+        _sortMutableStateFlow.value = RequestState.Loading
+
+        viewModelScope.launch {
+            try {
+                readSortStateUseCase.execute()
+                    .map { priority ->
+                        Priority.valueOf(priority)
+                    }
+                    .collect { priority ->
+                        _sortMutableStateFlow.value = RequestState.Success(priority)
+                    }
+            }
+            catch (exception: IOException) {
+                _sortMutableStateFlow.value = RequestState.Failure(exception)
+            }
+        }
     }
 }

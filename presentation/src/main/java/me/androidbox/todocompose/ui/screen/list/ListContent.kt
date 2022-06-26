@@ -25,21 +25,45 @@ import me.androidbox.todocompose.util.SearchAppBarState
 fun ListContent(
     listOfTask: RequestState<List<TodoTask>>,
     listOfSearchTask: RequestState<List<TodoTask>>,
+    listOfLowPriorityTask: List<TodoTask>,
+    listOfHighPriorityTask: List<TodoTask>,
+    sortState: RequestState<Priority>,
     searchAppBarState: SearchAppBarState,
     navigateToTaskScreen: (taskId: Int) -> Unit) {
 
-    if (searchAppBarState == SearchAppBarState.TRIGGERED) {
-        if (listOfSearchTask is RequestState.Success) {
-            HandleListContent(
-                listOfTask = listOfSearchTask.data,
-                navigateToTaskScreen = navigateToTaskScreen)
-        }
-    }
-    else {
-        if (listOfTask is RequestState.Success) {
-            HandleListContent(
-                listOfTask = listOfTask.data,
-                navigateToTaskScreen = navigateToTaskScreen)
+    if(sortState is RequestState.Success) {
+        when {
+            searchAppBarState == SearchAppBarState.TRIGGERED -> {
+                if (listOfSearchTask is RequestState.Success) {
+                    HandleListContent(
+                        listOfTask = listOfSearchTask.data,
+                        navigateToTaskScreen = navigateToTaskScreen)
+                }
+            }
+
+            sortState.data == Priority.NONE -> {
+                if (listOfTask is RequestState.Success) {
+                    HandleListContent(
+                        listOfTask = listOfTask.data,
+                        navigateToTaskScreen = navigateToTaskScreen)
+                }
+            }
+
+            sortState.data == Priority.LOW -> {
+                if (listOfTask is RequestState.Success) {
+                    HandleListContent(
+                        listOfTask = listOfLowPriorityTask,
+                        navigateToTaskScreen = navigateToTaskScreen)
+                }
+            }
+
+            sortState.data == Priority.HIGH -> {
+                if (listOfTask is RequestState.Success) {
+                    HandleListContent(
+                        listOfTask = listOfHighPriorityTask,
+                        navigateToTaskScreen = navigateToTaskScreen)
+                }
+            }
         }
     }
 }
