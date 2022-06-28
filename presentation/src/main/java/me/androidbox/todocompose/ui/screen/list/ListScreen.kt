@@ -61,7 +61,11 @@ fun ListScreen(
                 listOfHighPriorityTask,
                 sortState,
                 searchAppBarState,
-                navigateToTaskScreen)
+                navigateToTaskScreen,
+                onSwipeToDelete = { todoTask, action ->
+                    shareViewModel.actionMutableState.value = action
+                    shareViewModel.updateSelectedTask(todoTask)
+                })
         },
         floatingActionButton = {
             ListFab(onFabClicked = navigateToTaskScreen)
