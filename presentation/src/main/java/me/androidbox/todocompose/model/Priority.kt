@@ -7,8 +7,8 @@ import me.androidbox.todocompose.ui.theme.MediumPriorityColor
 import me.androidbox.todocompose.ui.theme.NonePriorityColor
 
 enum class Priority(val color: Color) {
-    HIGH(HighPriorityColor),
-    MEDIUM(MediumPriorityColor),
+    NONE(NonePriorityColor),
     LOW(LowPriorityColor),
-    NONE(NonePriorityColor)
+    MEDIUM(MediumPriorityColor),
+    HIGH(HighPriorityColor)
 }
