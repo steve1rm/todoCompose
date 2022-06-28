@@ -124,9 +124,11 @@ fun DisplayTask(
 
             if(isDismissed && dismissDirection == DismissDirection.EndToStart) {
                 val coroutineScope = rememberCoroutineScope()
-                coroutineScope.launch {
-                    delay(300)
-                    onSwipeToDelete(todoTask, Action.DELETE)
+                SideEffect {
+                    coroutineScope.launch {
+                        delay(300)
+                        onSwipeToDelete(todoTask, Action.DELETE)
+                    }
                 }
             }
 
