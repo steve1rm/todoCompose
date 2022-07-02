@@ -1,5 +1,6 @@
 package me.androidbox.todocompose.viewmodel
 
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
@@ -93,6 +94,12 @@ class ShareViewModel @Inject constructor(
             emptyList()
         )
 
+    init {
+        Log.d("handleDatabaseAction", "handleDatabaseAction")
+        getAllTasks()
+        readSortState()
+    }
+
     fun searchDatabase(searchQuery: String) {
         _searchListOfTodoTaskMutableStateFlow.value = RequestState.Loading
 
@@ -114,7 +121,7 @@ class ShareViewModel @Inject constructor(
         searchAppBarStateMutableState.value = SearchAppBarState.TRIGGERED
     }
 
-    fun getAllTasks() {
+    private fun getAllTasks() {
         listOfTaskMutableStateFlow.value = RequestState.Idle
 
         try {
@@ -223,8 +230,6 @@ class ShareViewModel @Inject constructor(
             }
             else -> {}
         }
-
-        actionMutableState.value = Action.NO_ACTION
     }
 
     fun updateSelectedTask(todoTask: TodoTask?) {
@@ -258,7 +263,7 @@ class ShareViewModel @Inject constructor(
         }
     }
 
-    fun readSortState() {
+    private fun readSortState() {
         _sortMutableStateFlow.value = RequestState.Loading
 
         viewModelScope.launch {

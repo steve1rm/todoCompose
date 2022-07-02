@@ -1,5 +1,6 @@
 package me.androidbox.todocompose.ui.screen.list
 
+import android.util.Log
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
@@ -16,16 +17,16 @@ import me.androidbox.todocompose.viewmodel.ShareViewModel
 @Composable
 fun ListScreen(
     navigateToTaskScreen: (taskId: Int) -> Unit,
-    shareViewModel: ShareViewModel
+    shareViewModel: ShareViewModel,
+    action: Action
 ) {
-    LaunchedEffect(key1 = true) {
-        shareViewModel.getAllTasks()
-        shareViewModel.readSortState()
-    }
+
+    LaunchedEffect(key1 = action, block = {
+        shareViewModel.handleDatabaseAction(action)
+    })
 
     val searchAppBarState: SearchAppBarState by shareViewModel.searchAppBarState
     val searchTextState: String by shareViewModel.searchTextState
-    val action: Action by shareViewModel.actionMutableState
     val listAllTask by shareViewModel.listOfTaskStateFlow.collectAsState()
     val searchAllTask by shareViewModel.searchTaskStateFlow.collectAsState()
     val listOfLowPriorityTask by shareViewModel.sortByLowPriorityStateFlow.collectAsState()
@@ -36,8 +37,8 @@ fun ListScreen(
 
     DisplaySnackBar(
         scaffoldState = scaffoldState,
-        handleDatabaseAction = {
-            shareViewModel.handleDatabaseAction(action)
+        onComplete = {
+            shareViewModel.actionMutableState.value = it
         },
         taskTitle = shareViewModel.title.value,
         action = action,
@@ -90,12 +91,11 @@ fun ListFab(onFabClicked: (taskId: Int) -> Unit) {
 @Composable
 fun DisplaySnackBar(
     scaffoldState: ScaffoldState,
-    handleDatabaseAction: () -> Unit,
+    onComplete: (Action) -> Unit,
     onUndoClicked: (Action) -> Unit,
     taskTitle: String,
     action: Action
 ) {
-    handleDatabaseAction()
 
     val scope = rememberCoroutineScope()
 
@@ -112,6 +112,8 @@ fun DisplaySnackBar(
                     onUndoClicked)
             }
         }
+
+        onComplete(Action.NO_ACTION)
     })
 }
 

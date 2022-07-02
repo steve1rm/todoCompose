@@ -1,20 +1,20 @@
 package me.androidbox.todocompose.navigation.destination
 
-import android.util.Log
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavType
-import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import me.androidbox.domain.entity.TodoTaskEntity
+import com.google.accompanist.navigation.animation.composable
 import me.androidbox.todocompose.Constant.TASK_ARGUMENT_KEY
 import me.androidbox.todocompose.Constant.TASK_SCREEN
 import me.androidbox.todocompose.ui.screen.task.TaskScreen
 import me.androidbox.todocompose.util.Action
 import me.androidbox.todocompose.viewmodel.ShareViewModel
 
+@OptIn(ExperimentalAnimationApi::class)
 fun NavGraphBuilder.taskComposable(
     navigateToListScreen: (Action) -> Unit,
     shareViewModel: ShareViewModel
