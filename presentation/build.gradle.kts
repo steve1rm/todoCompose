@@ -42,7 +42,7 @@ android {
     }
 
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.1.1"
+        kotlinCompilerExtensionVersion = libs.versions.version.androidx.compose.ui.get()
     }
     packagingOptions {
         resources {
