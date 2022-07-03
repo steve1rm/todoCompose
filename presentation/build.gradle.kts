@@ -55,6 +55,7 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
+    // Android
     implementation(libs.core.ktx)
     implementation(libs.appcompat)
     implementation(libs.android.material)
@@ -65,7 +66,7 @@ dependencies {
 
     // Accompanist Navigation Animation
     implementation(libs.accompanist.navigation.animation)
-    
+
     // Dagger - Hilt
     kapt(libs.bundles.dagger.kapt)
     implementation(libs.hilt.android)
@@ -73,8 +74,8 @@ dependencies {
 
     // Testing
     testImplementation(test.junit)
-    androidTestImplementation(AndroidX.test.ext.junit)
-    androidTestImplementation(AndroidX.test.espresso.core)
-    androidTestImplementation(AndroidX.compose.ui.testJunit4)
-    debugImplementation(AndroidX.compose.ui.tooling)
+    androidTestImplementation(test.ext.junit)
+    androidTestImplementation(test.espresso.core)
+    androidTestImplementation(test.ui.test.junit4)
+    debugImplementation(test.ui.tooling)
 }

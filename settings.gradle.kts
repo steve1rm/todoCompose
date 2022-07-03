@@ -69,8 +69,13 @@ dependencyResolutionManagement {
             version("version.androidx.test.ext.junit", "_")
             version("version.androidx.test.espresso", "_")
             version("version.junit.junit", "_")
+            version("version.androidx.compose.ui", "_")
 
             library("junit","junit", "junit" ).versionRef("version.junit.junit")
+            library("ext-junit", "androidx.test.ext", "junit").versionRef("version.androidx.test.ext.junit")
+            library("espresso-core", "androidx.test.espresso", "espresso-core").versionRef("version.androidx.test.espresso")
+            library("ui-test-junit4", "androidx.compose.ui", "ui-test-junit4").versionRef("version.androidx.compose.ui")
+            library("ui-tooling", "androidx.compose.ui", "ui-tooling").versionRef("version.androidx.compose.ui")
         }
 
         create("plugin") {
