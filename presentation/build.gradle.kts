@@ -55,28 +55,24 @@ dependencies {
     implementation(project(":domain"))
     implementation(project(":data"))
 
-    implementation(AndroidX.core.ktx)
-    implementation(AndroidX.appCompat)
-    implementation(Google.android.material)
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.lifecycle.runtimeKtx)
-    implementation(AndroidX.activity.compose)
+    implementation(libs.core.ktx)
+    implementation(libs.appcompat)
+    implementation(libs.android.material)
+    implementation(libs.lifecycle.runtime.ktx)
 
-    // DataStore Preferences
-//    implementation(AndroidX.dataStore.preferences)
+    // Compose
+    implementation(libs.bundles.compose)
 
     // Accompanist Navigation Animation
-    implementation("com.google.accompanist:accompanist-navigation-animation:_")
-
+    implementation(libs.accompanist.navigation.animation)
+    
     // Dagger - Hilt
     kapt(libs.bundles.dagger.kapt)
     implementation(libs.hilt.android)
     implementation(libs.dagger)
 
     // Testing
-    testImplementation(Testing.junit4)
+    testImplementation(test.junit)
     androidTestImplementation(AndroidX.test.ext.junit)
     androidTestImplementation(AndroidX.test.espresso.core)
     androidTestImplementation(AndroidX.compose.ui.testJunit4)

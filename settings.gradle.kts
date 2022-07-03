@@ -37,11 +37,12 @@ dependencyResolutionManagement {
             version("version.androidx.compose.compiler", "_")
             version("version.androidx.appcompat","_")
             version("version.androidx.activity",  "_")
+            version("version.google.accompanist", "_")
 
             library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("version.kotlinx.coroutines")
             library("kotlin", "org.jetbrains.kotlin", "kotlin-stdlib").versionRef("version.kotlin")
-            library("dagger", "com.google.dagger", "dagger").versionRef("version.google.dagger")
 
+            library("dagger", "com.google.dagger", "dagger").versionRef("version.google.dagger")
             library("hilt-android", "com.google.dagger", "hilt-android").versionRef("version.androidx.hilt")
             library("hilt-android-compiler", "com.google.dagger", "hilt-android-compiler").versionRef("version.androidx.hilt")
             library("hilt-compiler", "androidx.hilt", "hilt-compiler").versionRef("version.androidx.hilt")
@@ -57,6 +58,8 @@ dependencyResolutionManagement {
             library("ui-tooling-preview","androidx.compose.ui", "ui-tooling-preview").versionRef("version.androidx.compose.ui")
             library("lifecycle-runtime-ktx","androidx.lifecycle", "lifecycle-runtime-ktx").versionRef("version.androidx.lifecycle")
             library("activity-compose", "androidx.activity", "activity-compose").versionRef("version.androidx.activity")
+
+            library("accompanist-navigation-animation", "com.google.accompanist", "accompanist-navigation-animation").versionRef("version.google.accompanist")
 
             bundle("compose", listOf("ui", "material", "ui-tooling-preview", "activity-compose"))
             bundle("dagger-kapt", listOf("hilt-compiler", "hilt-android-compiler", "dagger-compiler", "dagger-android-processor"))
