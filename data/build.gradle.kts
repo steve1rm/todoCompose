@@ -36,16 +36,16 @@ dependencies {
     implementation(project(":domain"))
 
     // Room components
-    api("androidx.room:room-runtime:2.4.2")
-    kapt("androidx.room:room-compiler:2.4.2")
-    implementation("androidx.room:room-ktx:2.4.2")
+    api(AndroidX.room.runtime)
+    kapt(AndroidX.room.compiler)
+    implementation(AndroidX.room.ktx)
 
     // DataStore Preferences
-    implementation("androidx.datastore:datastore-preferences:1.0.0")
+    implementation(AndroidX.dataStore.preferences)
 
     // Dagger - Hilt
-    implementation("com.google.dagger:hilt-android:2.42")
-    kapt("com.google.dagger:hilt-android-compiler:2.42")
+    implementation(Google.dagger.hilt.android)
+    kapt(Google.dagger.hilt.android.compiler)
 
-    testImplementation("junit:junit:4.13.2")
+    testImplementation(Testing.junit4)
 }
