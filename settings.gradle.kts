@@ -60,7 +60,6 @@ fun MutableVersionCatalogContainer.createLibs() {
         library("hilt-android", "com.google.dagger", "hilt-android").versionRef("version.androidx.hilt")
         library("hilt-android-compiler", "com.google.dagger", "hilt-android-compiler").versionRef("version.androidx.hilt")
         library("hilt-compiler", "androidx.hilt", "hilt-compiler").versionRef("version.androidx.hilt")
-        library("dagger", "com.google.dagger", "dagger").versionRef("version.google.dagger")
         library("dagger-compiler", "com.google.dagger", "dagger-compiler").versionRef("version.google.dagger")
         library("dagger-android-processor", "com.google.dagger", "dagger-android-processor").versionRef("version.google.dagger")
 
