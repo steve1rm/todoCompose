@@ -38,6 +38,7 @@ dependencyResolutionManagement {
             version("version.androidx.appcompat","_")
             version("version.androidx.activity",  "_")
             version("version.google.accompanist", "_")
+            version("version.androidx.datastore", "_")
 
             library("coroutines", "org.jetbrains.kotlinx", "kotlinx-coroutines-core").versionRef("version.kotlinx.coroutines")
             library("kotlin", "org.jetbrains.kotlin", "kotlin-stdlib").versionRef("version.kotlin")
@@ -49,6 +50,13 @@ dependencyResolutionManagement {
             library("dagger", "com.google.dagger", "dagger").versionRef("version.google.dagger")
             library("dagger-compiler", "com.google.dagger", "dagger-compiler").versionRef("version.google.dagger")
             library("dagger-android-processor", "com.google.dagger", "dagger-android-processor").versionRef("version.google.dagger")
+
+            library("room-runtime", "androidx.room", "room-runtime").versionRef("version.androidx.room")
+            library("room-compiler", "androidx.room", "room-compiler").versionRef("version.androidx.room")
+            library("room-ktx", "androidx.room", "room-ktx").versionRef("version.androidx.room")
+
+            // DataStore Preferences
+            library("datastore-preferences", "androidx.datastore", "datastore-preferences").versionRef("version.androidx.datastore")
 
             library("core-ktx", "androidx.core", "core-ktx").versionRef("version.androidx.core")
             library("appcompat", "androidx.appcompat", "appcompat").versionRef("version.androidx.appcompat")

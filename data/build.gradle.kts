@@ -36,16 +36,16 @@ dependencies {
     implementation(project(":domain"))
 
     // Room components
-    api(AndroidX.room.runtime)
-    kapt(AndroidX.room.compiler)
-    implementation(AndroidX.room.ktx)
+    implementation(libs.room.runtime)
+    kapt(libs.room.compiler)
+    implementation(libs.room.ktx)
 
     // DataStore Preferences
-    implementation(AndroidX.dataStore.preferences)
+    implementation(libs.datastore.preferences)
 
     // Dagger - Hilt
-    implementation(Google.dagger.hilt.android)
-    kapt(Google.dagger.hilt.android.compiler)
+    implementation(libs.hilt.android)
+    kapt(libs.hilt.android.compiler)
 
-    testImplementation(Testing.junit4)
+    testImplementation(test.junit)
 }
